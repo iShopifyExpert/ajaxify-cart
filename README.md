@@ -1,76 +1,57 @@
 ajaxify-cart
 ============
 
-Snippet to ajaxify Your Shopify Cart.
+From your Shopify admin, go to Online Store > Themes.
 
-(Use this only if your theme does not already use Ajax, of course.)
+Find the theme you want to edit, and then click Actions > Edit code.
 
-The following themes have been confirmed to work with the 'ajaxify-cart' solution without any configuration:
+In the Layout directory, click theme.liquid.
 
-* Minimal
-* New Standard
+Ajax cart
+Find the closing </body> tag. On a new line right above the closing </body> tag, paste the following code:
 
-How to install
-==============
+{% render 'ajaxify-cart' %}
+Ajax cart 2
+Click Save.
 
-Create a new snippet called **ajaxify-cart**. Paste in it the content of the ajaxify-cart.liquid file. 
+In the Snippets directory, click Add a new snippet:
 
-Then, include the ajaxify-cart snippet in your theme by pasting the code below in your <a href="http://www.shopify.com/admin/themes/current?key=layout/theme.liquid">theme.liquid</a> file right above your `</body>` tag:
+Add a new snippet
+Name your snippet ajaxify-cart, and click Create snippet:
 
-`{% include 'ajaxify-cart' %}`
+ajaxify-cart snippet
+Your new snippet will open in the code editor.
 
-How to configure (optional)
-================
+In your new ajaxify-cart.liquid file, paste this code hosted on GitHub.
 
-No configuration is necessary, but if you want or need to change a few things, go into your snippet and, at the bottom of it, change how the `Shopify.AjaxifyCart.init()` method is called, by passing to it a configuration object.
+Caution
+In the pasted code, replace all instances of .size() with .length. The .size() method is depreciated as of JQuery 1.8.
 
-Things you can change:
+Click Save.
 
-*  `addToCartBtnLabel`
+Debut
+If you use Debut, then continue to the next steps:
 
-    Final label on add that cart button after the ajax request, so that you can add more. You could change that to 'Added to bag' for example. Default is `Add to cart`.
-  
-*  `addedToCartBtnLabel`
+In ajaxify-cart.liquid, find the opening <script> tag at the top of the file. On a new line right below the opening <script> tag, paste the following code:
 
-   Label on add to cart button that shows for howLongTillBtnReturnsToNormal milliseconds after item has been added to the cart. Default is `Thank you!`.
+window.onload = function() {
+Find the closing </script> tag. On a new line right above the closing </script> tag, paste the following code:
 
-*  `addingToCartBtnLabel`
+}
+In the same file, find the following code:
 
-   Label on add to cart button while item is being added to the cart. Default is `Adding...`.
+cartCountSelector:             '.cart-count, #cart-count a:first, #gocart p a, #cart .checkout em, .item-count',
+Replace it with:
 
-*  `soldOutBtnLabel`
+cartCountSelector:             '#CartCount',
+Click Save.
 
-   Label on add to cart button when all of the item's stock is in the cart. Default is `Sold Out`.
+In the Sections directory, click header.liquid.
 
-*  `howLongTillBtnReturnsToNormal`
+Find the following code:
 
-   Time during which the add to cart button label is addedToCartBtnLabel. Default is `2000`. In milliseconds.
+{% if cart.item_count > 0 %}
+Replace it with:
 
-*  `cartCountSelector`
-
-   CSS selector for the element on the page that contains the cart count to update after Ajax request.
-
-*  `cartTotalSelector`
-
-   CSS selector for the element on the page that contains the cart total to update after Ajax request.
-
-*  `feedbackPosition`
-
-   Where to position the feedback after the Ajax request. There are 3 possible values: 
-   
-   * `aboveForm` for top of add to cart form, 
-   * `belowForm` for below the add to cart form, and 
-   * `nextButton` for next to add to cart button. 
-   
-   The default is `nextButton`.
-
-The configuration object can contain any of the above.
-
-Example, if you wish to position the feedback above the add to cart form, and you wish to use 'Added to bag' as button label when the item has been added to the cart, use the following code:
-
-```javascript
-Shopify.AjaxifyCart.init({ 
-  feedbackPosition: 'aboveForm', 
-  addedToCartBtnLabel: 'Added to bag' 
-});
-```
+{% if cart.item_count > -1 %}
+Click Save.
